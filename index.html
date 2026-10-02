@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biology Ch. 6 Review — Ecology</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #0bc2cf 0%, #2b6cd4 55%, #7b2ff7 100%);
+    min-height: 100vh; color: #fff; display: flex; flex-direction: column;
+  }
+  header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 20px; background: rgba(0,0,0,.18); font-weight: 800;
+  }
+  .pill { background: rgba(255,255,255,.2); padding: 6px 14px; border-radius: 999px; }
+  main { flex: 1; display: flex; flex-direction: column; padding: 16px; max-width: 1100px; width: 100%; margin: 0 auto; }
+  .screen { display: none; flex: 1; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* Start */
+  .card { background: #fff; color: #2b2b2b; border-radius: 18px; padding: 28px; box-shadow: 0 8px 0 rgba(0,0,0,.2); }
+  .start { margin: auto; text-align: center; max-width: 560px; }
+  .start h1 { font-size: 2.2rem; color: #2b6cd4; margin-bottom: 6px; }
+  .start p { margin-bottom: 18px; color: #555; }
+  .sections { display: grid; gap: 10px; margin-bottom: 18px; text-align: left; }
+  .sections label { display: flex; gap: 10px; align-items: center; font-weight: 700; background: #f1f4fb; padding: 10px 14px; border-radius: 10px; cursor: pointer; }
+  .opts { display: flex; justify-content: center; gap: 18px; margin-bottom: 20px; font-weight: 700; flex-wrap: wrap; }
+  .btn {
+    border: none; cursor: pointer; font: inherit; font-weight: 900; font-size: 1.15rem;
+    padding: 14px 34px; border-radius: 12px; color: #fff; background: #4bc22e;
+    box-shadow: 0 6px 0 #2f8a17; transition: transform .05s;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #2f8a17; }
+  .btn.blue { background: #2b6cd4; box-shadow: 0 6px 0 #1a4590; }
+
+  /* Question */
+  .qbox {
+    background: #fff; color: #222; border-radius: 16px; padding: 22px 26px;
+    font-size: clamp(1.05rem, 2.2vw, 1.4rem); font-weight: 700; line-height: 1.4;
+    box-shadow: 0 6px 0 rgba(0,0,0,.2); margin-bottom: 16px;
+  }
+  .qbox .tag { display: inline-block; font-size: .8rem; background: #7b2ff7; color: #fff; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; }
+  .qbox .ctx { font-weight: 600; font-size: .92em; color: #444; margin-bottom: 10px; white-space: pre-line; }
+  .qbox table { border-collapse: collapse; font-size: .8em; font-weight: 600; margin: 8px 0 12px; width: 100%; }
+  .qbox td, .qbox th { border: 1px solid #bbb; padding: 6px 8px; text-align: left; vertical-align: top; }
+  .qbox th { background: #eef2fb; }
+  .answers { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex: 1; min-height: 280px; }
+  .ans {
+    border: none; border-radius: 14px; color: #fff; font: inherit; font-weight: 800;
+    font-size: clamp(.95rem, 1.9vw, 1.2rem); padding: 18px; cursor: pointer; text-align: center;
+    display: flex; align-items: center; justify-content: center; line-height: 1.3;
+    transition: transform .08s, filter .2s, opacity .2s;
+    text-shadow: 0 1px 2px rgba(0,0,0,.25);
+  }
+  .ans:hover:not(:disabled) { transform: scale(1.02); }
+  .ans:nth-child(1) { background: #ffa31e; box-shadow: 0 7px 0 #c97a0b; }
+  .ans:nth-child(2) { background: #00b4ff; box-shadow: 0 7px 0 #0080b8; }
+  .ans:nth-child(3) { background: #4bc22e; box-shadow: 0 7px 0 #2f8a17; }
+  .ans:nth-child(4) { background: #ff462b; box-shadow: 0 7px 0 #b82a14; }
+  .ans:disabled { cursor: default; }
+  .ans.dim { opacity: .35; }
+  .ans.right { outline: 6px solid #fff; transform: scale(1.03); }
+  .ans.right::after { content: " ✔"; }
+  .ans.wrong::after { content: " ✖"; }
+
+  .feedback { display: none; margin-top: 16px; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .feedback.show { display: flex; }
+  .verdict { font-size: 1.6rem; font-weight: 900; padding: 8px 18px; border-radius: 12px; }
+  .verdict.ok { background: #4bc22e; } .verdict.no { background: #ff462b; }
+  .why { flex: 1; background: rgba(0,0,0,.25); padding: 12px 16px; border-radius: 12px; font-weight: 600; min-width: 240px; }
+
+  /* Results */
+  .results { margin: auto; max-width: 760px; width: 100%; }
+  .score { font-size: 3.2rem; font-weight: 900; color: #2b6cd4; text-align: center; }
+  .results h2 { text-align: center; margin-bottom: 4px; }
+  .review { margin-top: 18px; max-height: 50vh; overflow: auto; }
+  .review div { padding: 10px 12px; border-left: 5px solid #ff462b; background: #fff4f2; margin-bottom: 8px; border-radius: 6px; font-size: .95rem; }
+  .review b { color: #2f8a17; }
+  .actions { display: flex; gap: 14px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+  @media (max-width: 640px) { .answers { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <span>🧬 Bio Ch. 6 Review</span>
+  <span class="pill" id="progress">—</span>
+  <span class="pill" id="scorePill">⭐ 0</span>
+</header>
+<main>
+  <!-- START -->
+  <section class="screen active" id="startScreen">
+    <div class="card start">
+      <h1>Ecology Review</h1>
+      <p>Lessons 6.1 – 6.3 · pick your sections and go!</p>
+      <div class="sections" id="sectionPicks"></div>
+      <div class="opts">
+        <label><input type="checkbox" id="shuffleQ" checked> Shuffle questions</label>
+      </div>
+      <button class="btn" id="startBtn">Start ▶</button>
+    </div>
+  </section>
+
+  <!-- QUESTION -->
+  <section class="screen" id="quizScreen">
+    <div class="qbox" id="qbox"></div>
+    <div class="answers" id="answers"></div>
+    <div class="feedback" id="feedback">
+      <span class="verdict" id="verdict"></span>
+      <span class="why" id="why"></span>
+      <button class="btn blue" id="nextBtn">Next ▶</button>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="screen" id="resultScreen">
+    <div class="card results">
+      <h2>Final Score</h2>
+      <div class="score" id="finalScore"></div>
+      <div class="review" id="review"></div>
+      <div class="actions">
+        <button class="btn" id="retryMissed">Retry Missed</button>
+        <button class="btn blue" id="restart">Back to Start</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const SECTIONS = {
+  "6.1": "6.1 Habitats, Niches, and Species Interactions",
+  "6.2": "6.2 Succession",
+  "6.3": "6.3 Biodiversity, Ecosystems, and Resilience"
+};
+
+// Each question: first entry in `choices` is always the correct one (shuffled at display time).
+const QUESTIONS = [
+  // ---------- 6.1 ----------
+  { s:"6.1", id:"6.1-1a", q:"Fungi, many birds, and a wide variety of insects all share the ______ of a tree in the forest.",
+    choices:["habitat","niche","energy source","symbiosis"],
+    why:"A habitat is the place where an organism lives — many species can share the same tree." },
+  { s:"6.1", id:"6.1-1b", q:"Part of the ______ of the fungi is to obtain energy from dead organic matter, such as dead wood.",
+    choices:["niche","habitat","tolerance","symbiosis"],
+    why:"A niche is an organism's role — how it gets energy and interacts with its environment." },
+  { s:"6.1", id:"6.1-1c", q:"Temperatures above 0°C and sufficient water in the environment help define the range of ______ for fungi.",
+    choices:["tolerance","habitat","niche","symbiosis"],
+    why:"Tolerance is the range of abiotic conditions (like temperature and water) an organism can survive in." },
+  { s:"6.1", id:"6.1-2a", q:"A flea and a dog are an example of ______, because the flea irritates the dog's skin and feeds on its blood.",
+    choices:["parasitism","commensalism","herbivory","mutualism"],
+    why:"Parasitism: one organism benefits (flea) and the host is harmed (dog)." },
+  { s:"6.1", id:"6.1-2b", q:"Certain bacteria live in the human digestive tract and help humans break down food. This relationship is an example of ______.",
+    choices:["mutualism","commensalism","herbivory","parasitism"],
+    why:"Mutualism: both species benefit — bacteria get food/shelter, humans get help digesting." },
+  { s:"6.1", id:"6.1-2c", q:"Cattle egrets eat insects off the back of an elephant. The egrets benefit without harming or helping the elephants. This is an example of ______.",
+    choices:["commensalism","herbivory","mutualism","parasitism"],
+    why:"Commensalism: one species benefits, the other is neither helped nor harmed." },
+  { s:"6.1", id:"6.1-3",
+    ctx:"Equal-sized populations of two earthworm species are placed in a terrarium of soil. Temperature, water, and food (bread scraps) are kept constant. Each population is counted daily.",
+    q:"According to the competitive exclusion principle, what is the most likely outcome over time?",
+    choices:["Only one population will thrive; the other will decrease to zero.",
+             "Both populations will reach the same size — the full carrying capacity of the terrarium.",
+             "One population will be about twice the size of the other.",
+             "Both populations will reach the same size — about half the carrying capacity."],
+    why:"Competitive exclusion: two species can't share the exact same niche for long — one outcompetes the other." },
+  { s:"6.1", id:"6.1-4", q:"Which is an example of herbivory affecting an ecosystem?",
+    choices:["Deer eat plant stems without thorns, allowing thorny plants to thrive.",
+             "Tall trees block sunlight from reaching plants on the forest floor.",
+             "Coyotes catch slow-moving rabbits, but not the faster rabbits.",
+             "Fungi break down dead organic matter, returning nutrients to the soil."],
+    why:"Herbivory = animals eating plants. Deer eating non-thorny plants shifts which plants survive." },
+  { s:"6.1", id:"6.1-5",
+    ctx:"A scientist uses a computer model to see if the alligator is a keystone species in the Florida Everglades. In the simulation, the alligator population stays at 100% for ~2 years, crashes to about 10% by year 6–8, then slowly recovers to about 45% by year 16.",
+    q:"Which simulation result would be the STRONGEST evidence that the alligator is a keystone species?",
+    choices:["Many other species' populations rise and fall in a similar pattern as the alligator.",
+             "Many other species are always increasing, regardless of alligator changes.",
+             "Many other species are always decreasing, regardless of alligator changes.",
+             "Other species stay about the same, regardless of alligator changes."],
+    why:"A keystone species has a huge effect on its ecosystem — so other populations should change when it changes." },
+  { s:"6.1", id:"6.1-6",
+    ctx:"A tolerance graph for earthworms vs. soil pH shows: lower limit of tolerance → zone of stress → optimum range (population peaks) → zone of stress → upper limit of tolerance.",
+    q:"In a meadow, soil pH gradually decreases from the optimum range into the zone of stress. What is the MOST LIKELY effect on the earthworm population?",
+    choices:["The population size decreases, but otherwise the population is unchanged.",
+             "The population size increases, but otherwise the population is unchanged.",
+             "Earthworms that tolerate high pH become more common.",
+             "Earthworms that tolerate low pH become more common."],
+    why:"In the zone of stress, fewer organisms can survive and reproduce, so the population shrinks." },
+  { s:"6.1", id:"6.1-7",
+    ctx:"Yasmine says tapeworms are common parasites of goats. Walter claims the tapeworm–goat relationship should be classified as predator and prey.",
+    q:"Which fact is MOST useful for Yasmine to refute Walter's claim?",
+    choices:["Tapeworms live inside a goat's body in a close relationship, and the goat stays alive.",
+             "Tapeworms get their energy from food they obtain from goats.",
+             "Tapeworms benefit from their relationship with goats.",
+             "Goats do not benefit from their relationship with tapeworms."],
+    why:"Predators kill and eat prey. Parasites live on/in a host over time without (usually) killing it — the other facts are true of predators too." },
+
+  // ---------- 6.2 ----------
+  { s:"6.2", id:"6.2-1a", q:"The somewhat-predictable series of changes to ecosystems over time is called ______.",
+    choices:["ecological succession","community development","population ecology","symbiosis development"],
+    why:"Ecological succession = the gradual, fairly predictable change in a community over time." },
+  { s:"6.2", id:"6.2-1b", q:"The first species to colonize barren areas are called ______ species, and may include lichens and some grasses.",
+    choices:["pioneer","primary","secondary","tolerant"],
+    why:"Pioneer species are the first to move into barren land (like lichens on bare rock)." },
+  { s:"6.2", id:"6.2-2", q:"Which describes PRIMARY succession, but not secondary succession?",
+    choices:["The process often begins on lifeless, barren rock formed from a volcanic eruption.",
+             "Small trees and shrubs replace grasses and other small plants.",
+             "Large trees replace small trees and shrubs.",
+             "The process often begins after a human disturbance, such as clear-cutting a forest."],
+    why:"Primary succession starts where there's no soil at all — like fresh volcanic rock." },
+  { s:"6.2", id:"6.2-3",
+    ctx:"Horatio studies an abandoned farm. It once had fields of corn, beans, spinach, and cattle/sheep pastures. Today it's covered with grasses, shrubs, and small trees, and is home to rabbits, gophers, and other small animals.",
+    q:"The evidence most strongly supports which conclusion?",
+    choices:["The farmland is undergoing secondary succession, which may or may not restore the original climax community.",
+             "The farmland is undergoing secondary succession, which will eventually restore the original climax community.",
+             "The farmland is undergoing primary succession, which will eventually restore the original climax community.",
+             "The farmland has undergone primary succession and is now a stable climax community."],
+    why:"Soil was already there, so it's secondary succession — and it isn't guaranteed to return to the original community." },
+  { s:"6.2", id:"6.2-4",
+    ctx:"Julie studies tropical rain forest in Brazil being cleared for farming. The poor soil limits farm productivity. She's evaluating the claim that an abandoned farm will return to something like the original rain forest.",
+    q:"Which statement is most useful for Julie to cite?",
+    choices:["Secondary succession may not restore the original climax community when soil structure and microbiome are damaged.",
+             "Secondary succession always restores the original climax community.",
+             "Primary succession always restores the original climax community.",
+             "Primary succession never restores the original climax community, due to local extinction of the original species."],
+    why:"Cleared land with damaged soil = secondary succession that might NOT recover the original forest." },
+  { s:"6.2", id:"6.2-5",
+    ctx:"A diagram shows secondary succession: bare field (3 years) → shrubs & young pines (5 years) → mature oak/hickory hardwood forest (40+ years).",
+    q:"What best describes the ANIMAL communities during this process?",
+    choices:["They become larger in population size and more diverse over time.",
+             "They remain about the same and do not undergo succession.",
+             "They become smaller in population size and less diverse over time.",
+             "They become larger in population size but keep the same diversity."],
+    why:"As plant communities get bigger and more complex, they support more animals and more kinds of animals." },
+  { s:"6.2", id:"6.2-6", q:"A wildfire burns part of a healthy grasslands ecosystem. Which climax community will most likely arrive in the burned region through succession?",
+    choices:["A grasslands ecosystem, very similar to the original",
+             "A community of pioneer species, such as lichens",
+             "A grasslands ecosystem of plants only, without animals",
+             "A patchwork of grasslands, hardwood forest, and other ecosystems"],
+    why:"The soil and climate are unchanged, so secondary succession leads back to grassland." },
+  { s:"6.2", id:"6.2-7", q:"Which property distinguishes pioneer species from species that arrive later in succession?",
+    choices:["Ability to grow on hard, barren rock",
+             "Ability to grow very quickly",
+             "Ability to grow in loose, wet soil",
+             "Defenses against herbivory"],
+    why:"Pioneer species (like lichens) can survive on bare rock where there's no soil yet." },
+
+  // ---------- 6.3 ----------
+  { s:"6.3", id:"6.3-1a", q:"The variety and variability of organisms is called ______.",
+    choices:["biodiversity","ecological succession","population ecology","symbiotic relationships"],
+    why:"Biodiversity = the variety of life." },
+  { s:"6.3", id:"6.3-1b", q:"One benefit of biodiversity is ecosystem ______, which is the ability of an ecosystem to recover after a disturbance.",
+    choices:["resilience","services","diversity","succession"],
+    why:"Resilience = the ability to bounce back after a disturbance." },
+  { s:"6.3", id:"6.3-1c", q:"Other benefits of healthy ecosystems include ecosystem ______, such as pollinating crops, regulating pests, and maintaining soil structure.",
+    choices:["services","resilience","diversity","succession"],
+    why:"Ecosystem services are the benefits nature provides to people." },
+  { s:"6.3", id:"6.3-2a", q:"A pond supports a variety of habitats in the water and along the shore. What type of biodiversity is this?",
+    choices:["Ecosystem diversity","Genetic diversity","Species diversity","Climate diversity"],
+    why:"A variety of habitats/ecosystems in an area = ecosystem diversity." },
+  { s:"6.3", id:"6.3-2b", q:"A variety of insects, snakes, and small mammals live in a meadow. What type of biodiversity is this?",
+    choices:["Species diversity","Genetic diversity","Ecosystem diversity","Climate diversity"],
+    why:"Many different kinds of organisms = species diversity." },
+  { s:"6.3", id:"6.3-2c", q:"Field mice differ from one another in fur color, fur thickness, and ear shape. What type of biodiversity is this?",
+    choices:["Genetic diversity","Species diversity","Ecosystem diversity","Climate diversity"],
+    why:"Differences among individuals of the SAME species = genetic diversity." },
+  { s:"6.3", id:"6.3-3",
+    table:{ head:["","Example 1","Example 2"], rows:[
+      ["Original pond community","algae, cattails, a variety of fishes, ducks, raccoons","algae, cattails, a variety of fishes, ducks, raccoons"],
+      ["Change to the ecosystem","increase in nitrogen and phosphorus in the water, due to agricultural runoff","decrease in the duck population, due to hunting by humans"],
+      ["Result after one year","an algal bloom covers the pond, followed by a decrease in all animal populations","little or no effect; duck population returns to previous levels after one year"] ]},
+    q:"Based on these results, Mr. Rojas's class can evaluate which property of the pond ecosystem?",
+    choices:["The resilience of the pond ecosystem to different types of changes",
+             "The benefits provided by biodiversity within the pond ecosystem",
+             "The ecosystem services that the pond provides",
+             "The climax community that will result from secondary succession"],
+    why:"The table compares how well the pond recovered from two disturbances — that's resilience." },
+  { s:"6.3", id:"6.3-4", q:"All healthy, highly productive ecosystems provide which essential ecosystem service involving gases in the atmosphere?",
+    choices:["Removing carbon dioxide from the atmosphere and storing carbon in the tissues of organisms",
+             "Increasing carbon dioxide levels in the atmosphere through plants and animals",
+             "Removing water vapor from the atmosphere and using it to support plant growth",
+             "Removing methane from the atmosphere and storing its carbon and hydrogen in organisms"],
+    why:"Photosynthesis pulls CO₂ out of the air and stores carbon in living things (carbon sequestration)." },
+  { s:"6.3", id:"6.3-5",
+    ctx:"Much of an ocean beach is covered in sand dunes and grasses. Homeowners propose flattening the dunes and removing the grasses so more visitors can swim and sunbathe.",
+    q:"If the plan is enacted, what is the most likely consequence?",
+    choices:["Increased risk of erosion during storms",
+             "Purer, less salty groundwater for the beach community",
+             "More sea turtles laying eggs on the beach",
+             "An increase in the depth of beach sand"],
+    why:"Dunes and their grasses hold sand in place and buffer storms — remove them and erosion increases." },
+  { s:"6.3", id:"6.3-6", q:"Ecologists in California worry about urbanization and invasive species harming biodiversity. Which choice lists measures that help conserve biodiversity?",
+    choices:["Indicator species monitoring, captive breeding, preserving ecosystems, and protecting biodiversity hotspots",
+             "Introducing new non-native species to compete with the invasive ones",
+             "Expanding development into natural areas to spread species out",
+             "Removing native predators so prey populations can grow"],
+    why:"On the worksheet this is 'select all that apply' — and ALL FOUR (A, B, C, D) are correct conservation measures." },
+];
+
+// ---------- engine ----------
+const $ = id => document.getElementById(id);
+let deck = [], idx = 0, score = 0, missed = [], locked = false;
+
+function shuffle(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function esc(s){ return s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active", s.id===id)); }
+
+$("sectionPicks").innerHTML = Object.entries(SECTIONS).map(([k,v]) => {
+  const n = QUESTIONS.filter(q=>q.s===k).length;
+  return `<label><input type="checkbox" value="${k}" checked> ${v} <span style="margin-left:auto;color:#888">${n} Qs</span></label>`;
+}).join("");
+
+function begin(list){
+  deck = $("shuffleQ").checked ? shuffle(list) : list.slice();
+  idx = 0; score = 0; missed = [];
+  $("scorePill").textContent = "⭐ 0";
+  show("quizScreen"); render();
+}
+
+function render(){
+  locked = false;
+  const q = deck[idx];
+  $("progress").textContent = `Question ${idx+1} / ${deck.length}`;
+  let html = `<span class="tag">Lesson ${q.s}</span>`;
+  if (q.ctx) html += `<div class="ctx">${esc(q.ctx)}</div>`;
+  if (q.table) html += `<table><tr>${q.table.head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr>${q.table.rows.map(r=>`<tr>${r.map((c,i)=>i?`<td>${esc(c)}</td>`:`<th>${esc(c)}</th>`).join("")}</tr>`).join("")}</table>`;
+  html += `<div>${esc(q.q)}</div>`;
+  $("qbox").innerHTML = html;
+  const correct = q.choices[0];
+  $("answers").innerHTML = shuffle(q.choices).map(c =>
+    `<button class="ans" data-correct="${c===correct}">${esc(c)}</button>`).join("");
+  document.querySelectorAll(".ans").forEach(b => b.onclick = () => pick(b));
+  $("feedback").classList.remove("show");
+}
+
+function pick(btn){
+  if (locked) return; locked = true;
+  const q = deck[idx], ok = btn.dataset.correct === "true";
+  document.querySelectorAll(".ans").forEach(b => {
+    b.disabled = true;
+    if (b.dataset.correct === "true") b.classList.add("right");
+    else if (b === btn) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+  if (ok) score++; else missed.push({ q, picked: btn.textContent });
+  $("scorePill").textContent = `⭐ ${score}`;
+  $("verdict").textContent = ok ? "Correct!" : "Not quite";
+  $("verdict").className = "verdict " + (ok ? "ok" : "no");
+  $("why").textContent = q.why;
+  $("nextBtn").textContent = idx === deck.length-1 ? "See Results ▶" : "Next ▶";
+  $("feedback").classList.add("show");
+}
+
+function finish(){
+  const pct = Math.round(score/deck.length*100);
+  $("finalScore").textContent = `${score} / ${deck.length}  (${pct}%)`;
+  $("progress").textContent = "Done!";
+  $("review").innerHTML = missed.length
+    ? `<h3 style="margin-bottom:8px">Review these:</h3>` + missed.map(m =>
+        `<div><small>Lesson ${m.q.s}</small><br>${esc(m.q.q)}<br>You picked: ${esc(m.picked)}<br>Answer: <b>${esc(m.q.choices[0])}</b></div>`).join("")
+    : `<p style="text-align:center;font-size:1.3rem">🎉 Perfect score!</p>`;
+  $("retryMissed").style.display = missed.length ? "" : "none";
+  show("resultScreen");
+}
+
+$("nextBtn").onclick = () => { idx++; idx < deck.length ? render() : finish(); };
+$("startBtn").onclick = () => {
+  const picks = [...document.querySelectorAll("#sectionPicks input:checked")].map(i=>i.value);
+  const list = QUESTIONS.filter(q => picks.includes(q.s));
+  if (!list.length) return alert("Pick at least one section.");
+  begin(list);
+};
+$("retryMissed").onclick = () => begin(missed.map(m=>m.q));
+$("restart").onclick = () => { $("progress").textContent = "—"; show("startScreen"); };
+document.addEventListener("keydown", e => {
+  if ($("quizScreen").classList.contains("active")) {
+    if (!locked && ["1","2","3","4"].includes(e.key)) document.querySelectorAll(".ans")[+e.key-1]?.click();
+    else if (locked && (e.key==="Enter"||e.key===" ")) { e.preventDefault(); $("nextBtn").click(); }
+  }
+});
+</script>
+</body>
+</html>
