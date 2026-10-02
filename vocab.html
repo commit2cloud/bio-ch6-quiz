@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biology Ch. 6 Vocab — Ecology</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #0bc2cf 0%, #2b6cd4 55%, #7b2ff7 100%);
+    min-height: 100vh; color: #fff; display: flex; flex-direction: column;
+  }
+  header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 20px; background: rgba(0,0,0,.18); font-weight: 800;
+  }
+  .pill { background: rgba(255,255,255,.2); padding: 6px 14px; border-radius: 999px; }
+  main { flex: 1; display: flex; flex-direction: column; padding: 16px; max-width: 1100px; width: 100%; margin: 0 auto; }
+  .screen { display: none; flex: 1; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* Start */
+  .card { background: #fff; color: #2b2b2b; border-radius: 18px; padding: 28px; box-shadow: 0 8px 0 rgba(0,0,0,.2); }
+  .start { margin: auto; text-align: center; max-width: 560px; }
+  .start h1 { font-size: 2.2rem; color: #2b6cd4; margin-bottom: 6px; }
+  .start p { margin-bottom: 18px; color: #555; }
+  .sections { display: grid; gap: 10px; margin-bottom: 18px; text-align: left; }
+  .sections label { display: flex; gap: 10px; align-items: center; font-weight: 700; background: #f1f4fb; padding: 10px 14px; border-radius: 10px; cursor: pointer; }
+  .opts { display: flex; justify-content: center; gap: 18px; margin-bottom: 20px; font-weight: 700; flex-wrap: wrap; }
+  .btn {
+    border: none; cursor: pointer; font: inherit; font-weight: 900; font-size: 1.15rem;
+    padding: 14px 34px; border-radius: 12px; color: #fff; background: #4bc22e;
+    box-shadow: 0 6px 0 #2f8a17; transition: transform .05s;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #2f8a17; }
+  .btn.blue { background: #2b6cd4; box-shadow: 0 6px 0 #1a4590; }
+
+  /* Question */
+  .qbox {
+    background: #fff; color: #222; border-radius: 16px; padding: 22px 26px;
+    font-size: clamp(1.05rem, 2.2vw, 1.4rem); font-weight: 700; line-height: 1.4;
+    box-shadow: 0 6px 0 rgba(0,0,0,.2); margin-bottom: 16px;
+  }
+  .qbox .tag { display: inline-block; font-size: .8rem; background: #7b2ff7; color: #fff; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; }
+  .qbox .ctx { font-weight: 600; font-size: .92em; color: #444; margin-bottom: 10px; white-space: pre-line; }
+  .qbox table { border-collapse: collapse; font-size: .8em; font-weight: 600; margin: 8px 0 12px; width: 100%; }
+  .qbox td, .qbox th { border: 1px solid #bbb; padding: 6px 8px; text-align: left; vertical-align: top; }
+  .qbox th { background: #eef2fb; }
+  .answers { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex: 1; min-height: 280px; }
+  .ans {
+    border: none; border-radius: 14px; color: #fff; font: inherit; font-weight: 800;
+    font-size: clamp(.95rem, 1.9vw, 1.2rem); padding: 18px; cursor: pointer; text-align: center;
+    display: flex; align-items: center; justify-content: center; line-height: 1.3;
+    transition: transform .08s, filter .2s, opacity .2s;
+    text-shadow: 0 1px 2px rgba(0,0,0,.25);
+  }
+  .ans:hover:not(:disabled) { transform: scale(1.02); }
+  .ans:nth-child(1) { background: #ffa31e; box-shadow: 0 7px 0 #c97a0b; }
+  .ans:nth-child(2) { background: #00b4ff; box-shadow: 0 7px 0 #0080b8; }
+  .ans:nth-child(3) { background: #4bc22e; box-shadow: 0 7px 0 #2f8a17; }
+  .ans:nth-child(4) { background: #ff462b; box-shadow: 0 7px 0 #b82a14; }
+  .ans:disabled { cursor: default; }
+  .ans.dim { opacity: .35; }
+  .ans.right { outline: 6px solid #fff; transform: scale(1.03); }
+  .ans.right::after { content: " ✔"; }
+  .ans.wrong::after { content: " ✖"; }
+
+  .feedback { display: none; margin-top: 16px; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .feedback.show { display: flex; }
+  .verdict { font-size: 1.6rem; font-weight: 900; padding: 8px 18px; border-radius: 12px; }
+  .verdict.ok { background: #4bc22e; } .verdict.no { background: #ff462b; }
+  .why { flex: 1; background: rgba(0,0,0,.25); padding: 12px 16px; border-radius: 12px; font-weight: 600; min-width: 240px; }
+
+  /* Results */
+  .results { margin: auto; max-width: 760px; width: 100%; }
+  .score { font-size: 3.2rem; font-weight: 900; color: #2b6cd4; text-align: center; }
+  .results h2 { text-align: center; margin-bottom: 4px; }
+  .review { margin-top: 18px; max-height: 50vh; overflow: auto; }
+  .review div { padding: 10px 12px; border-left: 5px solid #ff462b; background: #fff4f2; margin-bottom: 8px; border-radius: 6px; font-size: .95rem; }
+  .review b { color: #2f8a17; }
+  .actions { display: flex; gap: 14px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+  @media (max-width: 640px) { .answers { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <span>🧬 Bio Ch. 6 Vocab</span>
+  <span class="pill" id="progress">—</span>
+  <span class="pill" id="scorePill">⭐ 0</span>
+</header>
+<main>
+  <!-- START -->
+  <section class="screen active" id="startScreen">
+    <div class="card start">
+      <h1>Ecology Vocab</h1>
+      <p>19 vocab words · Lessons 6.1 – 6.3 · <a href="./">Quiz review →</a></p>
+      <div class="sections" id="sectionPicks"></div>
+      <div class="opts">
+        <label><input type="checkbox" id="shuffleQ" checked> Shuffle questions</label>
+        <select id="mode" style="font:inherit;font-weight:700;padding:4px 8px;border-radius:8px"><option value="d2t">Definition → Word</option><option value="t2d">Word → Definition</option><option value="mix">Mixed (both)</option></select>
+      </div>
+      <button class="btn" id="startBtn">Start ▶</button>
+    </div>
+  </section>
+
+  <!-- QUESTION -->
+  <section class="screen" id="quizScreen">
+    <div class="qbox" id="qbox"></div>
+    <div class="answers" id="answers"></div>
+    <div class="feedback" id="feedback">
+      <span class="verdict" id="verdict"></span>
+      <span class="why" id="why"></span>
+      <button class="btn blue" id="nextBtn">Next ▶</button>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="screen" id="resultScreen">
+    <div class="card results">
+      <h2>Final Score</h2>
+      <div class="score" id="finalScore"></div>
+      <div class="review" id="review"></div>
+      <div class="actions">
+        <button class="btn" id="retryMissed">Retry Missed</button>
+        <button class="btn blue" id="restart">Back to Start</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const SECTIONS = {
+  "6.1": "6.1 Habitats, Niches, and Species Interactions",
+  "6.2": "6.2 Succession",
+  "6.3": "6.3 Biodiversity, Ecosystems, and Resilience"
+};
+
+// Each question: first entry in `choices` is always the correct one (shuffled at display time).
+// Vocab from notebook. `confuse` = the 3 terms used as wrong answers (and whose definitions are wrong answers in reverse mode).
+const VOCAB = [
+  { s:"6.1", term:"Habitat", def:"The actual place an organism lives, described by a particular combination of physical and biological environmental factors.",
+    confuse:["Niche","Tolerance","Resource"] },
+  { s:"6.1", term:"Tolerance", def:"The variety of environmental conditions within which an organism can survive and reproduce.",
+    confuse:["Habitat","Niche","Resilience"] },
+  { s:"6.1", term:"Niche", def:"The full range of physical and biological conditions in which an organism lives and the way in which the organism uses those conditions.",
+    confuse:["Habitat","Tolerance","Symbiosis"] },
+  { s:"6.1", term:"Resource", def:"Any necessity for life.",
+    confuse:["Habitat","Ecosystem services","Niche"] },
+  { s:"6.1", term:"Competitive exclusion principle", def:"No two species can occupy exactly the same niche in exactly the same habitat at exactly the same time.",
+    confuse:["Keystone species","Symbiosis","Ecological succession"] },
+  { s:"6.1", term:"Keystone species", def:"A species that plays a vital and unique role in maintaining the structure, stability, and diversity of an ecosystem.",
+    confuse:["Competitive exclusion principle","Biodiversity","Resilience"] },
+  { s:"6.1", term:"Symbiosis", def:"A particularly close, interdependent relationship between two species.",
+    confuse:["Mutualism","Commensalism","Niche"] },
+  { s:"6.1", term:"Commensalism", def:"A relationship in which one organism benefits and the other is neither helped nor harmed.",
+    confuse:["Mutualism","Parasitism","Symbiosis"] },
+  { s:"6.1", term:"Mutualism", def:"A relationship between two species in which both species benefit.",
+    confuse:["Commensalism","Parasitism","Symbiosis"] },
+  { s:"6.1", term:"Parasitism", def:"A relationship in which one organism lives inside or on another organism and harms it.",
+    confuse:["Commensalism","Mutualism","Keystone species"] },
+  { s:"6.2", term:"Ecological succession", def:"Ecosystems change over time, especially after disturbances, as new species move in, populations change, and some species die out.",
+    confuse:["Primary succession","Resilience","Biodiversity"] },
+  { s:"6.2", term:"Primary succession", def:"Succession that begins on newly formed rock or other areas that have no remnants of an older community.",
+    confuse:["Ecological succession","Competitive exclusion principle","Resilience"] },
+  { s:"6.3", term:"Biodiversity", def:"The total of all the variety of organisms in the biosphere.",
+    confuse:["Species diversity","Ecosystem diversity","Genetic diversity"] },
+  { s:"6.3", term:"Ecosystem diversity", def:"The variety of habitats, living communities, and ecological processes in the biosphere.",
+    confuse:["Species diversity","Genetic diversity","Biodiversity"] },
+  { s:"6.3", term:"Species diversity", def:"The number of different species and their relative abundance in a particular biological community.",
+    confuse:["Ecosystem diversity","Genetic diversity","Biodiversity"] },
+  { s:"6.3", term:"Genetic diversity", def:"The sum total of all the different forms of genetic information carried by a particular species, or by all organisms on Earth.",
+    confuse:["Species diversity","Ecosystem diversity","Biodiversity"] },
+  { s:"6.3", term:"Resilience", def:"The ability of an organism or entire ecosystem to withstand and recover from environmental disruptions or changing conditions.",
+    confuse:["Tolerance","Ecological succession","Ecosystem services"] },
+  { s:"6.3", term:"Ecosystem services", def:"Benefits ecosystems provide, including producing food, cycling nutrients, maintaining soil fertility, purifying water, storing carbon, pollinating crops, regulating pests, and buffering the effects of extreme weather events.",
+    confuse:["Resource","Conservation biology","Resilience"] },
+  { s:"6.3", term:"Conservation biology", def:"Works to preserve and protect natural resources, ranging from individual species to entire ecosystems, biodiversity, and ecosystem services.",
+    confuse:["Ecosystem services","Biodiversity","Ecological succession"] },
+];
+const DEF = Object.fromEntries(VOCAB.map(v => [v.term, v.def]));
+
+function buildQuestions(mode){
+  const out = [];
+  VOCAB.forEach(v => {
+    if (mode !== "t2d") out.push({ s:v.s, q:`Which word matches this definition?\n\n“${v.def}”`,
+      choices:[v.term, ...v.confuse], why:`${v.term}: ${v.def}` });
+    if (mode !== "d2t") out.push({ s:v.s, q:`What does “${v.term}” mean?`,
+      choices:[v.def, ...v.confuse.map(t => DEF[t])], why:`${v.term}: ${v.def}` });
+  });
+  return out;
+}
+
+
+// ---------- engine ----------
+const $ = id => document.getElementById(id);
+let deck = [], idx = 0, score = 0, missed = [], locked = false;
+
+function shuffle(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function esc(s){ return s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active", s.id===id)); }
+
+$("sectionPicks").innerHTML = Object.entries(SECTIONS).map(([k,v]) => {
+  const n = VOCAB.filter(q=>q.s===k).length;
+  return `<label><input type="checkbox" value="${k}" checked> ${v} <span style="margin-left:auto;color:#888">${n} words</span></label>`;
+}).join("");
+
+function begin(list){
+  deck = $("shuffleQ").checked ? shuffle(list) : list.slice();
+  idx = 0; score = 0; missed = [];
+  $("scorePill").textContent = "⭐ 0";
+  show("quizScreen"); render();
+}
+
+function render(){
+  locked = false;
+  const q = deck[idx];
+  $("progress").textContent = `Question ${idx+1} / ${deck.length}`;
+  let html = `<span class="tag">Lesson ${q.s}</span>`;
+  if (q.ctx) html += `<div class="ctx">${esc(q.ctx)}</div>`;
+  if (q.table) html += `<table><tr>${q.table.head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr>${q.table.rows.map(r=>`<tr>${r.map((c,i)=>i?`<td>${esc(c)}</td>`:`<th>${esc(c)}</th>`).join("")}</tr>`).join("")}</table>`;
+  html += `<div style="white-space:pre-line">${esc(q.q)}</div>`;
+  $("qbox").innerHTML = html;
+  const correct = q.choices[0];
+  $("answers").innerHTML = shuffle(q.choices).map(c =>
+    `<button class="ans" data-correct="${c===correct}">${esc(c)}</button>`).join("");
+  document.querySelectorAll(".ans").forEach(b => b.onclick = () => pick(b));
+  $("feedback").classList.remove("show");
+}
+
+function pick(btn){
+  if (locked) return; locked = true;
+  const q = deck[idx], ok = btn.dataset.correct === "true";
+  document.querySelectorAll(".ans").forEach(b => {
+    b.disabled = true;
+    if (b.dataset.correct === "true") b.classList.add("right");
+    else if (b === btn) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+  if (ok) score++; else missed.push({ q, picked: btn.textContent });
+  $("scorePill").textContent = `⭐ ${score}`;
+  $("verdict").textContent = ok ? "Correct!" : "Not quite";
+  $("verdict").className = "verdict " + (ok ? "ok" : "no");
+  $("why").textContent = q.why;
+  $("nextBtn").textContent = idx === deck.length-1 ? "See Results ▶" : "Next ▶";
+  $("feedback").classList.add("show");
+}
+
+function finish(){
+  const pct = Math.round(score/deck.length*100);
+  $("finalScore").textContent = `${score} / ${deck.length}  (${pct}%)`;
+  $("progress").textContent = "Done!";
+  $("review").innerHTML = missed.length
+    ? `<h3 style="margin-bottom:8px">Review these:</h3>` + missed.map(m =>
+        `<div><small>Lesson ${m.q.s}</small><br>${esc(m.q.q)}<br>You picked: ${esc(m.picked)}<br>Answer: <b>${esc(m.q.choices[0])}</b></div>`).join("")
+    : `<p style="text-align:center;font-size:1.3rem">🎉 Perfect score!</p>`;
+  $("retryMissed").style.display = missed.length ? "" : "none";
+  show("resultScreen");
+}
+
+$("nextBtn").onclick = () => { idx++; idx < deck.length ? render() : finish(); };
+$("startBtn").onclick = () => {
+  const picks = [...document.querySelectorAll("#sectionPicks input:checked")].map(i=>i.value);
+  const list = buildQuestions($("mode").value).filter(q => picks.includes(q.s));
+  if (!list.length) return alert("Pick at least one section.");
+  begin(list);
+};
+$("retryMissed").onclick = () => begin(missed.map(m=>m.q));
+$("restart").onclick = () => { $("progress").textContent = "—"; show("startScreen"); };
+document.addEventListener("keydown", e => {
+  if ($("quizScreen").classList.contains("active")) {
+    if (!locked && ["1","2","3","4"].includes(e.key)) document.querySelectorAll(".ans")[+e.key-1]?.click();
+    else if (locked && (e.key==="Enter"||e.key===" ")) { e.preventDefault(); $("nextBtn").click(); }
+  }
+});
+</script>
+</body>
+</html>
