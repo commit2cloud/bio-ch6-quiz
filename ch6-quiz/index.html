@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="History Chapter 6 practice quizzes for Lessons 3, 4, 5, and 6: The Global Connections, 1415-1796.">
+<title>Ch6 Quiz</title>
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("scoutTheme");
+    const theme =
+      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<style>
+:root {
+  color-scheme: light;
+  --cp-bg: #f7f4ef;
+  --cp-bg-elevated: #fcfbf8;
+  --cp-surface: #ffffff;
+  --cp-surface-soft: #f5f5f5;
+  --cp-border: #dedede;
+  --cp-border-strong: #919191;
+  --cp-text: #242424;
+  --cp-text-muted: #5c5c5c;
+  --cp-text-soft: #6f6f6f;
+  --cp-accent: #b11f4b;
+  --cp-accent-hover: #9a1a41;
+  --cp-accent-soft: rgba(177, 31, 75, 0.08);
+  --cp-accent-fg: #ffffff;
+  --cp-success: #16a34a;
+  --cp-danger: #dc2626;
+  --cp-warning: #f59e0b;
+  --cp-link: #0078d4;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+  --cp-overlay: rgba(255, 255, 255, 0.8);
+  --cp-panel: rgba(255, 255, 255, 0.86);
+  --cp-panel-strong: rgba(255, 255, 255, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.55);
+  --cp-highlight: rgba(177, 31, 75, 0.12);
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cp-bg: #3d3b3a;
+  --cp-bg-elevated: #343231;
+  --cp-surface: #292929;
+  --cp-surface-soft: #2e2e2e;
+  --cp-border: #474747;
+  --cp-border-strong: #5f5f5f;
+  --cp-text: #dedede;
+  --cp-text-muted: #919191;
+  --cp-text-soft: #b0b0b0;
+  --cp-accent: #fd8ea1;
+  --cp-accent-hover: #fb7b91;
+  --cp-accent-soft: rgba(253, 142, 161, 0.14);
+  --cp-accent-fg: #1a1a1a;
+  --cp-success: #4ade80;
+  --cp-danger: #f87171;
+  --cp-warning: #fbbf24;
+  --cp-link: #4da6ff;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+  --cp-overlay: rgba(41, 41, 41, 0.88);
+  --cp-panel: rgba(41, 41, 41, 0.72);
+  --cp-panel-strong: rgba(41, 41, 41, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.04);
+  --cp-highlight: rgba(253, 142, 161, 0.12);
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--cp-bg); color:var(--cp-text); font-family:"Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif; line-height:1.5; }
+button, input { font:inherit; }
+button { cursor:pointer; }
+button:focus-visible, a:focus-visible, summary:focus-visible { outline:3px solid var(--cp-accent); outline-offset:4px; }
+button:disabled { cursor:default; }
+a { color:var(--cp-link); }
+header { border-bottom:1px solid var(--cp-border); background:var(--cp-surface); padding:16px 24px; display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
+.brand { font-size:1.3rem; font-weight:800; margin-right:auto; }
+.pill { background:var(--cp-surface-soft); border:1px solid var(--cp-border); padding:4px 12px; border-radius:10px; font-weight:700; }
+main { max-width:1100px; margin:auto; padding:24px; }
+[hidden] { display:none !important; }
+h1 { font-size:clamp(2rem,4vw,3rem); margin:0 0 8px; line-height:1.15; }
+h2,h3,p { margin-top:0; }
+.muted { color:var(--cp-text-muted); }
+.eyebrow { color:var(--cp-accent); text-transform:uppercase; font-weight:800; letter-spacing:.08em; font-size:.8rem; }
+.grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.card, .qbox { padding:24px; background:var(--cp-surface); border:1px solid var(--cp-border); border-radius:16px; }
+.card { display:flex; flex-direction:column; }
+.card h2 { font-size:1.3rem; margin-bottom:12px; }
+.card .btn { margin-top:auto; }
+.btn { display:inline-block; padding:12px 20px; font-weight:800; border:2px solid var(--cp-accent); border-radius:10px; color:var(--cp-accent-fg); background:var(--cp-accent); }
+.btn:hover { background:var(--cp-accent-hover); border-color:var(--cp-accent-hover); }
+.secondary { background:var(--cp-surface); color:var(--cp-text); border-color:var(--cp-border-strong); }
+.secondary:hover { background:var(--cp-surface-soft); border-color:var(--cp-accent); }
+.toolbar { display:flex; gap:16px; flex-wrap:wrap; align-items:center; margin:24px 0; }
+.toolbar label { display:flex; align-items:center; gap:8px; }
+input { accent-color:var(--cp-accent); width:18px; height:18px; }
+.qbox { margin-bottom:20px; }
+.tag { display:inline-block; color:var(--cp-accent); background:var(--cp-accent-soft); font-weight:800; padding:4px 12px; border-radius:10px; margin-bottom:12px; font-size:.9rem; }
+#question { font-size:clamp(1.25rem,2.4vw,1.8rem); margin:0; }
+.answers { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.answer { padding:24px; min-height:144px; border:3px solid var(--cp-border); border-radius:10px; background:var(--cp-surface); color:var(--cp-text); font-size:1.1rem; text-align:left; font-weight:700; line-height:1.4; display:flex; gap:12px; align-items:center; }
+.answer:nth-child(1) { border-top-color:var(--cp-warning); }
+.answer:nth-child(2) { border-top-color:var(--cp-link); }
+.answer:nth-child(3) { border-top-color:var(--cp-success); }
+.answer:nth-child(4) { border-top-color:var(--cp-danger); }
+.answer:hover:not(:disabled) { background:var(--cp-accent-soft); border-color:var(--cp-accent); }
+.key { font-size:.85rem; border:1px solid var(--cp-border-strong); padding:4px 8px; border-radius:6px; flex-shrink:0; }
+.answer.correct { border-color:var(--cp-success); }
+.answer.incorrect { border-color:var(--cp-danger); }
+.answer.dim { opacity:.55; }
+.feedback { margin-top:24px; padding:20px; border:2px solid var(--cp-border); border-radius:16px; background:var(--cp-surface); }
+#verdict { font-size:1.5rem; margin-bottom:8px; }
+.correct-text { color:var(--cp-success); }
+.incorrect-text { color:var(--cp-danger); }
+.notice { border-left:4px solid var(--cp-warning); background:var(--cp-surface-soft); padding:12px 16px; border-radius:10px; font-size:.95rem; }
+.score { font-size:3rem; font-weight:900; color:var(--cp-accent); margin-bottom:12px; }
+.review-item { border-left:4px solid var(--cp-danger); padding:16px; margin:16px 0; background:var(--cp-surface); border-radius:10px; }
+.review-item h3 { font-size:1.1rem; }
+.review-item p { margin-bottom:8px; }
+details { margin-top:24px; }
+summary { cursor:pointer; font-weight:700; }
+.sources { padding:16px 0; }
+.sources a { display:block; margin-bottom:8px; }
+.score-table { width:100%; border-collapse:collapse; text-align:left; margin-bottom:24px; }
+.score-table th,.score-table td { padding:12px; border-bottom:1px solid var(--cp-border); }
+#error { color:var(--cp-danger); font-weight:700; }
+@media(max-width:640px) {
+  main { padding:16px; }
+  header { padding:12px 16px; }
+  .grid,.answers { grid-template-columns:1fr; }
+  .answer { min-height:100px; padding:16px; }
+  .card,.qbox { padding:20px; }
+}
+@media(prefers-reduced-motion:no-preference) { .answer { transition:background .15s, border-color .15s; } }
+</style>
+</head>
+<body>
+<header>
+  <span class="brand">Ch6 Quiz <span class="muted">/ History</span></span>
+  <span class="pill" id="progress">Choose a lesson</span>
+  <span class="pill" id="runningScore">Correct: 0</span>
+</header>
+<main>
+  <section id="home">
+    <p class="eyebrow">History / Chapter 6 / 1415-1796</p>
+    <h1>Ch6 Quiz</h1>
+    <p class="muted">The Global Connections. Choose a lesson, answer one question at a time, and review anything you miss.</p>
+    <div class="toolbar">
+      <label><input id="shuffleQuestions" type="checkbox" checked>Shuffle questions</label>
+      <button class="btn secondary" id="allLessons" disabled>Practice all four lessons</button>
+    </div>
+    <p id="error" role="alert"></p>
+    <div class="grid" id="lessonCards"></div>
+    <p class="muted" style="margin-top:24px">Four choices per question, one correct answer. Short-answer questions and outline statements have been adapted for multiple choice. Scores are tracked during each round, not stored online.</p>
+    <details>
+      <summary>About corrected answers and sources</summary>
+      <div class="sources">
+        <p>Red marks were checked rather than automatically treated as proof that an answer was wrong. Cartier claimed land for France; Champlain founded Quebec. Europe, Africa, and the Americas is the correct triangular-trade answer.</p>
+        <p>Some Lesson 6 red-marked wording is valid: <strong>free enterprise</strong> is a standard description of a market system, and <strong>parent country</strong> conveys the idea usually called the mother country. Exact textbook wording is unavailable. Any remaining wording or estimate uncertainty is noted with the answer.</p>
+        <p>The Middle Passage question uses about <strong>2 million deaths</strong>, a rounded historical estimate, not an exact count. The worksheet's handwritten answer is not used as an authoritative key.</p>
+        <p>Names, grades, handwriting, and worksheet photographs are not included on this public page.</p>
+        <div id="sourceList"></div>
+      </div>
+    </details>
+  </section>
+  <section id="quiz" hidden>
+    <div class="toolbar"><button class="btn secondary" id="backHome">Back to lessons</button><span class="muted">Keys 1-4: choose an answer. Enter after answering: next.</span></div>
+    <div class="qbox"><span class="tag" id="questionTag"></span><h2 id="question" tabindex="-1"></h2></div>
+    <div class="answers" id="answers"></div>
+    <div class="feedback" id="feedback" aria-live="polite" hidden>
+      <h3 id="verdict"></h3>
+      <p id="correctAnswer"></p>
+      <p id="explanation"></p>
+      <p id="wordingNote" class="notice" hidden>Textbook wording or historical estimates may differ; see the explanation above.</p>
+      <p id="source"></p>
+      <button class="btn" id="next">Next question</button>
+    </div>
+  </section>
+  <section id="results" hidden>
+    <p class="eyebrow">Round complete</p>
+    <h1>Your results</h1>
+    <div id="finalScore" class="score"></div>
+    <div id="breakdown"></div>
+    <div class="toolbar">
+      <button class="btn" id="retry">Retry missed questions</button>
+      <button class="btn secondary" id="replay">Play this round again</button>
+      <button class="btn secondary" id="resultsHome">Choose a lesson</button>
+    </div>
+    <h2 id="reviewTitle"></h2>
+    <div id="review"></div>
+  </section>
+  <noscript><p class="notice">JavaScript is required to run this quiz. Please enable it and reload the page.</p></noscript>
+</main>
+<script src="questions.js"></script>
+<script>
+"use strict";
+(() => {
+  const el = id => document.getElementById(id);
+  const params = new URLSearchParams(location.search);
+  let deck = [], position = 0, responses = [], locked = false;
+  const escape = text => String(text).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const shuffle = values => {
+    const result = values.slice();
+    for (let i=result.length-1;i>0;i--) {
+      const j = Math.floor(Math.random()*(i+1));
+      [result[i],result[j]] = [result[j],result[i]];
+    }
+    return result;
+  };
+  const screen = name => ["home","quiz","results"].forEach(id => { el(id).hidden = id !== name; });
+  const correctCount = () => responses.filter(r => r.correct).length;
+  const missed = () => responses.filter(r => !r.correct).map(r => r.question);
+  function showHome() {
+    screen("home");
+    el("progress").textContent = "Choose a lesson";
+    el("runningScore").textContent = "Correct: 0";
+    el("home").querySelector("h1").scrollIntoView({block:"start"});
+  }
+  function begin(questions) {
+    if (!questions.length) throw new Error("Cannot start an empty quiz.");
+    deck = el("shuffleQuestions").checked ? shuffle(questions) : questions.slice();
+    position = 0;
+    responses = [];
+    screen("quiz");
+    render();
+  }
+  function render() {
+    locked = false;
+    const question = deck[position];
+    el("progress").textContent = `Question ${position+1} / ${deck.length}`;
+    el("runningScore").textContent = `Correct: ${correctCount()}`;
+    el("questionTag").textContent = `Lesson ${question.lesson} / Sheet ${question.ref}`;
+    el("question").textContent = question.q;
+    el("feedback").hidden = true;
+    el("answers").replaceChildren();
+    shuffle(question.choices).forEach((choice,index) => {
+      const button = document.createElement("button");
+      button.className = "answer";
+      button.innerHTML = `<span class="key" aria-hidden="true">${index+1}</span><span>${escape(choice)}</span>`;
+      button.dataset.choice = choice;
+      button.addEventListener("click", () => pick(choice));
+      el("answers").append(button);
+    });
+    el("question").focus();
+  }
+  function pick(choice) {
+    if (locked) return;
+    locked = true;
+    const question = deck[position];
+    const correct = choice === question.choices[0];
+    responses.push({question, choice, correct});
+    for (const button of el("answers").children) {
+      button.disabled = true;
+      if (button.dataset.choice === question.choices[0]) {
+        button.classList.add("correct");
+        button.lastChild.textContent += " (Correct)";
+      } else if (button.dataset.choice === choice) {
+        button.classList.add("incorrect");
+        button.lastChild.textContent += " (Your answer)";
+      } else button.classList.add("dim");
+    }
+    el("verdict").textContent = correct ? "Correct!" : "Not quite - keep learning.";
+    el("verdict").className = correct ? "correct-text" : "incorrect-text";
+    el("correctAnswer").textContent = `Correct answer: ${question.choices[0]}`;
+    el("explanation").textContent = question.why;
+    el("wordingNote").hidden = !question.note;
+    const source = question.source && SOURCES[question.source];
+    el("source").replaceChildren();
+    if (source) {
+      const link = document.createElement("a");
+      link.href = source.url;
+      link.textContent = source.title;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      el("source").append(link);
+    }
+    el("runningScore").textContent = `Correct: ${correctCount()} / ${responses.length}`;
+    el("next").textContent = position === deck.length-1 ? "See results" : "Next question";
+    el("feedback").hidden = false;
+    el("next").focus({preventScroll:true});
+  }
+  function finish() {
+    screen("results");
+    el("progress").textContent = "Round complete";
+    const score = correctCount();
+    el("finalScore").textContent = `${score} / ${deck.length} (${Math.round(score/deck.length*100)}%)`;
+    const ids = [...new Set(deck.map(q => q.lesson))].sort();
+    el("breakdown").innerHTML = `<table class="score-table"><thead><tr><th>Lesson</th><th>Correct</th></tr></thead><tbody>${ids.map(id => {
+      const answers = responses.filter(r => r.question.lesson === id);
+      return `<tr><td>Lesson ${id}: ${escape(LESSONS[id])}</td><td>${answers.filter(r => r.correct).length} / ${answers.length}</td></tr>`;
+    }).join("")}</tbody></table>`;
+    const wrong = responses.filter(r => !r.correct);
+    el("retry").hidden = !wrong.length;
+    el("reviewTitle").textContent = wrong.length ? "Review missed questions" : "Perfect score!";
+    el("review").innerHTML = wrong.map(r => `<article class="review-item"><p class="muted">Lesson ${r.question.lesson} / Sheet ${escape(r.question.ref)}</p><h3>${escape(r.question.q)}</h3><p>Your answer: ${escape(r.choice)}</p><p><strong class="correct-text">Correct: ${escape(r.question.choices[0])}</strong></p><p>${escape(r.question.why)}</p></article>`).join("");
+    el("finalScore").scrollIntoView({block:"start"});
+  }
+  el("next").addEventListener("click", () => {
+    if (!locked) return;
+    position++;
+    position < deck.length ? render() : finish();
+  });
+  el("retry").addEventListener("click", () => begin(missed()));
+  el("replay").addEventListener("click", () => begin(deck));
+  el("backHome").addEventListener("click", showHome);
+  el("resultsHome").addEventListener("click", showHome);
+  document.addEventListener("keydown", event => {
+    if (el("quiz").hidden || event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
+    if (!locked && /^[1-4]$/.test(event.key)) {
+      event.preventDefault();
+      el("answers").children[Number(event.key)-1].click();
+    } else if (locked && event.key === "Enter") {
+      event.preventDefault();
+      el("next").click();
+    }
+  });
+  try {
+    if (typeof QUESTIONS === "undefined" || typeof LESSONS === "undefined" || typeof SOURCES === "undefined") throw new Error("Question data failed to load.");
+    for (const q of QUESTIONS) {
+      if (!LESSONS[q.lesson] || !q.q || !q.why || q.choices.length !== 4 || new Set(q.choices).size !== 4 || q.choices.some(c => typeof c !== "string" || !c) || (q.source && !SOURCES[q.source])) throw new Error("Question data is invalid.");
+    }
+    el("lessonCards").innerHTML = Object.entries(LESSONS).map(([id,title]) => `<article class="card"><p class="eyebrow">Lesson ${id}</p><h2>${escape(title)}</h2><p class="muted">${QUESTIONS.filter(q => q.lesson === id).length} questions</p><button class="btn" data-lesson="${id}">Start Lesson ${id}</button><p style="margin:12px 0 0"><a href="?lesson=${id}">Direct lesson link</a></p></article>`).join("");
+    document.querySelectorAll("[data-lesson]").forEach(button => button.addEventListener("click", () => begin(QUESTIONS.filter(q => q.lesson === button.dataset.lesson))));
+    el("allLessons").disabled = false;
+    el("allLessons").addEventListener("click", () => begin(QUESTIONS));
+    el("sourceList").innerHTML = Object.values(SOURCES).map(source => `<a href="${escape(source.url)}" target="_blank" rel="noopener noreferrer">${escape(source.title)}</a>`).join("");
+    const selected = params.get("lesson");
+    if (selected !== null) {
+      if (Object.hasOwn(LESSONS,selected)) begin(QUESTIONS.filter(q => q.lesson === selected));
+      else el("error").textContent = "That lesson is not available. Choose Lesson 3, 4, 5, or 6 below.";
+    }
+  } catch (error) {
+    console.error("Quiz initialization failed:", error);
+    el("error").textContent = "The quiz could not load its questions. Reload the page or check that questions.js is available.";
+  }
+})();
+</script>
+</body>
+</html>
